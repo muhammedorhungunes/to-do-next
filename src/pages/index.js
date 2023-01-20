@@ -1,11 +1,16 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import styles from '@/styles/Home.module.css'
+import Head from "next/head";
+import Image from "next/image";
+import { Inter } from "@next/font/google";
+import styles from "@/styles/Home.module.css";
+import Buttons from "../components/Buttons";
+import Table from "../components/Table";
+import { useState } from "react";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const [showTable, setShowTable] = useState(false);
+
   return (
     <>
       <Head>
@@ -15,7 +20,10 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <div className={styles.description}>
+        <Buttons showTable={showTable} setShowTable={setShowTable}></Buttons>
+        {showTable ? <Table></Table> : <></>}
+
+        {/* <div className={styles.description}>
           <p>
             Get started by editing&nbsp;
             <code className={styles.code}>pages/index.js</code>
@@ -116,8 +124,8 @@ export default function Home() {
               with&nbsp;Vercel.
             </p>
           </a>
-        </div>
+        </div> */}
       </main>
     </>
-  )
+  );
 }
