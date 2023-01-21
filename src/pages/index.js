@@ -1,13 +1,12 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import Buttons from "../components/Buttons";
-import VisibleTaskList from "../components/Table";
+import Table from "../components/Table";
 import { useState } from "react";
 
-
-
-export default function Home({tasks,actions}) {
+export default function Home() {
   const [showTable, setShowTable] = useState(false);
+  const [selectedRows, setSelectedRows] = useState([]);
 
   return (
     <>
@@ -18,8 +17,8 @@ export default function Home({tasks,actions}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <Buttons showTable={showTable} setShowTable={setShowTable}></Buttons>
-        {showTable ? <VisibleTaskList></VisibleTaskList> : <></>}
+        <Buttons showTable={showTable} setShowTable={setShowTable} selectedRows={selectedRows}></Buttons>
+        {showTable ? <Table selectedRows={selectedRows} setSelectedRows={setSelectedRows}></Table> : <></>}
       </main>
     </>
   );

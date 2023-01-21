@@ -1,11 +1,7 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { useSelector, useDispatch } from 'react-redux';
-import {
-    decrement,
-    add,
-    getTasks,
-  } from './TasksSlice';
+import { useSelector } from 'react-redux';
+import { getTasks } from './TasksSlice';
 
 const columns = [
   { field: "id", headerName: "Task Id", width: 200 },
@@ -14,37 +10,9 @@ const columns = [
   { field: "status", headerName: "Status", width: 200 },
 ];
 
-const rows = [
-  {
-    id: 1,
-    project_name: "Company A",
-    task_name: "Pentest",
-    status: "Not Started",
-  },
-  {
-    id: 2,
-    project_name: "Company B",
-    task_name: "Pentest",
-    status: "In Progress",
-  },
-  {
-    id: 3,
-    project_name: "Company C",
-    task_name: "Pentest",
-    status: "Completed",
-  },
-  {
-    id: 4,
-    project_name: "Company D",
-    task_name: "Pentest",
-    status: "Completed",
-  },
-];
-
-export default function Table() {
-  const [selectedRows, setSelectedRows] = React.useState([]);
+export default function Table(props) {
   const tasks = useSelector(getTasks);
-  const dispatch = useDispatch();
+
 
   return (
     <div style={{ height: 400, width: "100%" }}>
@@ -56,14 +24,11 @@ export default function Table() {
         checkboxSelection
         onSelectionModelChange={(ids) => {
           const selectedIDs = new Set(ids);
-          const selectedRows = rows.filter((row) => selectedIDs.has(row.id));
+          const selectedRows = tasks.filter((row) => selectedIDs.has(row.id));
 
-          setSelectedRows(selectedRows);
+          props?.setSelectedRows(selectedRows);
         }}
       />
-      <pre style={{ fontSize: 10 }}>
-        {JSON.stringify(selectedRows, null, 4)}
-      </pre>
     </div>
   );
 }

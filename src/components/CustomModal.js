@@ -11,6 +11,9 @@ import {
   Button,
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import { add } from "./TasksSlice";
+import { number } from "prop-types";
 
 const style = {
   position: "absolute",
@@ -25,11 +28,40 @@ const style = {
 };
 
 export default function CustomModal(props) {
-  const handleClose = () => props?.setOpenModal(false);
+  const handleClose = () => {
+    props?.setOpenModal(false);
+    setId("");
+    setProjectName("");
+    setTaskName("");
+    setStatus("");
+  };
+  const [id, setId] = React.useState("");
+  const [projectName, setProjectName] = React.useState("");
+  const [taskName, setTaskName] = React.useState("");
   const [status, setStatus] = React.useState("");
+  const newTask = {
+    id: 0,
+    project_name: "",
+    task_name: "",
+    status: "",
+  };
+  const dispatch = useDispatch();
 
   const handleChange = (event) => {
     setStatus(event.target.value);
+  };
+
+  const addToTask = () => {
+    newTask.id = id;
+    newTask.project_name = projectName;
+    newTask.task_name = taskName;
+    newTask.status = status;
+    dispatch(add(newTask));
+    setId("");
+    setProjectName("");
+    setTaskName("");
+    setStatus("");
+    props?.setOpenModal(false);  
   };
 
   return (
@@ -48,15 +80,34 @@ export default function CustomModal(props) {
         <Typography id="keep-mounted-modal-title" variant="h6" component="h2">
           Id:
         </Typography>
-        <TextField fullWidth label="Id" id="ID" />
+        <TextField
+          fullWidth
+          label="Id"
+          id="ID"
+          onChange={(e) => setId(e.target.value)}
+          type="number"
+          value={id}
+        />
         <Typography id="keep-mounted-modal-title" variant="h6" component="h2">
           Project Name:
         </Typography>
-        <TextField fullWidth label="Project Name" id="ProjectName" />
+        <TextField
+          fullWidth
+          label="Project Name"
+          id="ProjectName"
+          onChange={(e) => setProjectName(e.target.value)}
+          value={projectName}
+        />
         <Typography id="keep-mounted-modal-title" variant="h6" component="h2">
           Task Name:
         </Typography>
-        <TextField fullWidth label="Task Name" id="TaskName" />
+        <TextField
+          fullWidth
+          label="Task Name"
+          id="TaskName"
+          onChange={(e) => setTaskName(e.target.value)}
+          value={taskName}
+        />
         <Typography id="keep-mounted-modal-title" variant="h6" component="h2">
           Status:
         </Typography>
@@ -74,8 +125,12 @@ export default function CustomModal(props) {
             <MenuItem value={30}>Completed</MenuItem>
           </Select>
         </FormControl>
-        <Button variant="contained" style={{ float: "right", margin: "10px" }}>
-          Contained
+        <Button
+          variant="contained"
+          style={{ float: "right", margin: "10px" }}
+          onClick={addToTask}
+        >
+          Add To Task
         </Button>
       </Box>
     </Modal>

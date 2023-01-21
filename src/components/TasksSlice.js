@@ -35,23 +35,22 @@ export const TasksSlice = createSlice({
   reducers: {
     add: (state, action) => {
         var tempValue = [
-            ...state,
+            ...state.value,
             {
-              id: state.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1,
-              project_name: action.object.project_name,
-              task_name: action.object.task_name,
-              status: action.object.status
+              id: state.value.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1,
+              project_name: action.payload.project_name,
+              task_name: action.payload.task_name,
+              status: action.payload.status
             }
         ]
         state.value = tempValue;
     },
     decrement: (state, action) => {
-        var tempList = state.filter(task =>
-            action.list.forEach(element => {
-                task.id !== element.id
-            })  
-          )
-      state.value = tempList;
+        var tempList = [...state.value]
+        action.payload.forEach(element => {
+            tempList = tempList.filter(task => {return element.id !== task.id})
+        });
+       state.value = tempList;
     },
   
   },
